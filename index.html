@@ -11,17 +11,16 @@
     
     <style>
         :root {
-            --primary-color: #064e3b; /* Hijau Zamrud Tua */
-            --secondary-color: #047857; /* Hijau Islami */
-            --accent-color: #b45309; /* Emas Tulen / Amber */
-            --bg-light: #f0fdf4; /* Latar Belakang Hijau Lembut */
+            --primary-color: #064e3b; 
+            --secondary-color: #047857; 
+            --accent-color: #b45309; 
+            --bg-light: #f0fdf4; 
             --white: #ffffff;
         }
 
         body { 
             font-family: 'Plus Jakarta Sans', sans-serif; 
             background-color: var(--bg-light); 
-            /* Corak Geometri Islamik Halus menggunakan SVG Latar Belakang */
             background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60' viewBox='0 0 60 60'%3E%3Cpath d='M30 0l30 30-30 30L0 30z' fill='%23dcfce7' fill-opacity='0.4' fill-rule='evenodd'/%3E%3C/svg%3E");
             margin: 0; 
             padding: 15px; 
@@ -29,7 +28,7 @@
         }
 
         .container { 
-            max-width: 750px; 
+            max-width: 800px; 
             margin: 20px auto; 
             background: var(--white); 
             padding: 30px; 
@@ -40,7 +39,6 @@
             overflow: hidden;
         }
 
-        /* Hiasan Sempadan Seni Islamik di Bahagian Atas Kad */
         .container::before {
             content: "";
             position: absolute;
@@ -51,7 +49,6 @@
             background: linear-gradient(90deg, var(--accent-color), var(--secondary-color), var(--accent-color));
         }
 
-        /* Header Tema Islamik */
         .header-area {
             text-align: center;
             margin-bottom: 30px;
@@ -67,24 +64,9 @@
             font-weight: bold;
         }
 
-        h1 { 
-            font-size: 22px; 
-            color: var(--primary-color); 
-            margin: 5px 0;
-            font-weight: 700;
-            letter-spacing: 0.5px;
-        }
+        h1 { font-size: 22px; color: var(--primary-color); margin: 5px 0; font-weight: 700; letter-spacing: 0.5px; }
+        h2 { font-size: 14px; color: var(--secondary-color); margin: 0; text-transform: uppercase; letter-spacing: 2px; font-weight: 600; }
 
-        h2 { 
-            font-size: 14px; 
-            color: var(--secondary-color); 
-            margin: 0;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            font-weight: 600;
-        }
-
-        /* Kotak Status NFC */
         .status-box { 
             padding: 15px; 
             border-radius: 12px; 
@@ -100,7 +82,6 @@
             gap: 10px;
         }
 
-        /* Rekabentuk Butang Moden */
         .btn { 
             padding: 14px 20px; 
             border: none; 
@@ -115,74 +96,10 @@
             align-items: center;
             justify-content: center;
             gap: 10px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
         }
-
         .btn-primary { background: var(--primary-color); color: white; }
-        .btn-primary:hover { background: #022c22; transform: translateY(-1px); }
-        
-        .btn-green { background: #10b981; color: white; }
-        .btn-green:hover { background: #059669; }
-        
-        .btn-red { background: #ef4444; color: white; }
-        .btn-red:hover { background: #dc2626; }
+        .btn-primary:hover { background: #022c22; }
 
-        .flex-group { display: flex; gap: 12px; }
-
-        /* Kad Maklumat Peserta Selepas Skan */
-        .card-info { 
-            background: linear-gradient(145deg, #ffffff, #f9fafb); 
-            padding: 25px; 
-            border-radius: 16px; 
-            margin-top: 25px; 
-            display: none; 
-            border-left: 5px solid var(--accent-color); 
-            box-shadow: inset 0 2px 4px rgba(0,0,0,0.02), 0 4px 12px rgba(0,0,0,0.05);
-        }
-
-        .card-info h3 { 
-            margin-top: 0; 
-            color: var(--primary-color); 
-            font-size: 18px;
-            border-bottom: 1px solid #e5e7eb;
-            padding-bottom: 10px;
-        }
-
-        .info-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-            margin-bottom: 20px;
-        }
-
-        .info-item p { margin: 4px 0; font-size: 14px; color: #4b5563; }
-        .info-item strong { color: #1f2937; }
-
-        .score-display {
-            font-size: 24px;
-            font-weight: 700;
-            display: block;
-            margin-top: 5px;
-        }
-
-        /* Input Form */
-        .input-style {
-            width: 100%; 
-            padding: 12px; 
-            margin-bottom: 12px; 
-            border-radius: 8px; 
-            border: 1px solid #cbd5e1;
-            box-sizing: border-box;
-            font-family: inherit;
-            font-size: 14px;
-        }
-        .input-style:focus {
-            outline: none;
-            border-color: var(--secondary-color);
-            box-shadow: 0 0 0 3px rgba(4, 120, 87, 0.1);
-        }
-
-        /* Papan Markah / Leaderboard */
         .section-title {
             color: var(--primary-color);
             font-size: 18px;
@@ -193,30 +110,53 @@
             gap: 10px;
         }
 
-        table { width: 100%; border-collapse: separate; border-spacing: 0 8px; margin-top: 10px; }
-        th, td { padding: 14px; text-align: left; }
-        th { background: transparent; color: #6b7280; font-size: 13px; text-transform: uppercase; letter-spacing: 1px; font-weight: 600; padding-bottom: 5px; }
-        
-        tr circle { fill: var(--primary-color); }
-        tbody tr { background: #f8fafc; transition: transform 0.2s; border-radius: 8px; }
-        tbody tr:hover { transform: scale(1.01); box-shadow: 0 4px 10px rgba(0,0,0,0.03); }
-        
-        td { border: solid 1px transparent; border-style: solid none; }
-        td:first-child { border-left: solid 1px #e2e8f0; border-top-left-radius: 10px; border-bottom-left-radius: 10px; font-weight: bold; text-align: center; width: 50px;}
-        td:last-child { border-right: solid 1px #e2e8f0; border-top-right-radius: 10px; border-bottom-right-radius: 10px; font-weight: bold; color: var(--secondary-color); }
+        /* Rekabentuk Kad Kumpulan Khas & Senarai Ahli */
+        .kumpulan-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 20px;
+            margin-top: 15px;
+        }
+        @media(min-width: 600px) { .kumpulan-grid { grid-template-columns: 1fr 1fr; } }
 
-        /* Rekabentuk Top 3 Leaderboard */
-        tbody tr:nth-child(1) td:first-child { background: #fef08a; color: #a16207; border-color: #fef08a; } /* Emas */
-        tbody tr:nth-child(2) td:first-child { background: #e2e8f0; color: #475569; border-color: #e2e8f0; } /* Perak */
-        tbody tr:nth-child(3) td:first-child { background: #ffedd5; color: #c2410c; border-color: #ffedd5; } /* Gangsa */
+        .kumpulan-card {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 14px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.02);
+        }
+        .kumpulan-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid var(--secondary-color);
+            padding-bottom: 8px;
+            margin-bottom: 12px;
+        }
+        .kumpulan-nama { font-weight: 700; color: var(--primary-color); font-size: 16px; }
+        .kumpulan-skor { font-weight: 700; color: var(--accent-color); font-size: 16px; background: #fef3c7; padding: 2px 10px; border-radius: 20px; }
+        
+        .ahli-list { list-style: none; padding: 0; margin: 0; }
+        .ahli-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid #edf2f7;
+            font-size: 13px;
+        }
+        .ahli-item:last-child { border-bottom: none; }
+        .ahli-nama { color: #4a5568; font-weight: 500; }
+        .ahli-merit { color: #10b981; font-weight: 600; }
 
-        hr { border: 0; border-top: 1px dashed #cbd5e1; margin: 25px 0; }
+        /* Style tambahan untuk modal input */
+        .swal-input-group { margin-bottom: 10px; text-align: left; }
+        .swal-input-group label { font-size: 12px; font-weight: 600; color: #4a5568; }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <!-- Header Seni Islamik -->
     <div class="header-area">
         <p class="arabic-text">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</p>
         <h1>NADWAH KEPIMPINAN ISLAM 2026</h1>
@@ -224,67 +164,18 @@
     </div>
     
     <div id="statusNFC" class="status-box">
-        <i class="fa-solid Birds fa-circle-notch fa-spin"></i> 
+        <i class="fa-solid fa-circle-notch fa-spin"></i> 
         <span>Sila aktifkan pengimbas untuk memulakan tugasan</span>
     </div>
     <button class="btn btn-primary" onclick="startNFCScan()">
         <i class="fa-solid fa-id-card-clip"></i> Aktifkan Sinar Skaner NFC
     </button>
 
-    <!-- Info Peserta Selepas Di-Skan -->
-    <div id="pesertaCard" class="card-info">
-        <h3><i class="fa-solid fa-user-shield"></i> Profil Pemimpin (Tag: <span id="lblTagId">-</span>)</h3>
-        
-        <div class="info-grid">
-            <div class="info-item">
-                <p><strong>Nama:</strong> <span id="lblNama">-</span></p>
-                <p><strong>Sekolah:</strong> <span id="lblSekolah">-</span></p>
-                <p><strong>Kumpulan:</strong> <span id="lblKumpulan">-</span></p>
-            </div>
-            <div class="info-item" style="text-align: right; border-left: 1px dashed #cbd5e1; padding-left: 15px;">
-                <p>Mata Individu</p>
-                <span id="lblMeritIndividu" class="score-display" style="color: #10b981;">0</span>
-                <p style="margin-top: 10px;">Mata Kumpulan</p>
-                <span id="lblMeritKumpulan" class="score-display" style="color: #3b82f6;">0</span>
-            </div>
-        </div>
-        
-        <hr>
-        <h4 style="color: var(--primary-color); margin-bottom: 10px;"><i class="fa-solid fa-gavel"></i> Penilaian Fasilitator</h4>
-        <input type="number" id="inputMata" class="input-style" placeholder="Jumlah Nilai Merit (Contoh: 15)">
-        <input type="text" id="inputSebab" class="input-style" placeholder="Sebab / Nama Aktiviti (Contoh: Imam Terbaik)">
-        
-        <div class="flex-group">
-            <button class="btn btn-green" onclick="kemaskiniMerit('tambah', 'individu')">
-                <i class="fa-solid fa-user-plus"></i> + Merit Individu
-            </button>
-            <button class="btn btn-green" onclick="kemaskiniMerit('tambah', 'kumpulan')">
-                <i class="fa-solid fa-users-gear"></i> + Merit Kumpulan
-            </button>
-        </div>
-        <div class="flex-group">
-            <button class="btn btn-red" onclick="kemaskiniMerit('tolak', 'individu')">
-                <i class="fa-solid fa-user-minus"></i> - Merit Individu
-            </button>
-            <button class="btn btn-red" onclick="kemaskiniMerit('tolak', 'kumpulan')">
-                <i class="fa-solid fa-users-slash"></i> - Merit Kumpulan
-            </button>
-        </div>
+    <!-- Dashboard Dinamik Kumpulan & Ahli -->
+    <h2 class="section-title"><i class="fa-solid fa-users" style="color: var(--accent-color);"></i> Kafilah & Ahli Kumpulan</h2>
+    <div id="dashboardKumpulan" class="kumpulan-grid">
+        <!-- Data dijana secara dinamik dari Firebase -->
     </div>
-
-    <h2 class="section-title"><i class="fa-solid fa-trophy" style="color: var(--accent-color);"></i> Papan Kedudukan Kumpulan (Masa-Nyata)</h2>
-    <table id="leaderboardKumpulan">
-        <thead>
-            <tr>
-                <th>Ked.</th>
-                <th>Nama Kumpulan / Kafilah</th>
-                <th style="text-align: right;">Jumlah Merit</th>
-            </tr>
-        </thead>
-        <tbody>
-            <!-- Data auto-load dari Firebase -->
-        </tbody>
-    </table>
 </div>
 
 <!-- Firebase SDK -->
@@ -306,18 +197,17 @@
     const db = getDatabase(app);
 
     let activeTagId = null;
-    let dataPesertaAktif = null;
 
     window.startNFCScan = async function() {
         if ('NDEFReader' in window) {
             try {
                 const ndef = new NDEFReader();
                 await ndef.scan();
-                document.getElementById('statusNFC').innerHTML = "<i class='fa-solid fa-rss fa-spin' style='color:#10b981;'></i> <span style='color:#064e3b;'>Skaner sedia. Sentuh kad kad pada belakang peranti...</span>";
+                document.getElementById('statusNFC').innerHTML = "<i class='fa-solid fa-rss fa-spin' style='color:#10b981;'></i> <span style='color:#064e3b;'>Skaner sedia. Sentuh kad pada peranti...</span>";
                 
                 ndef.onreading = async event => {
                     activeTagId = event.serialNumber;
-                    semakPeserta(activeTagId);
+                    prosesImbasanKad(activeTagId);
                 };
             } catch (error) {
                 Swal.fire("Ralat Sistem", "Akses NFC gagal diaktifkan: " + error, "error");
@@ -327,44 +217,40 @@
         }
     }
 
-    async function semakPeserta(tagId) {
+    async function prosesImbasanKad(tagId) {
         const dbRef = ref(db, `peserta/${tagId}`);
         const snapshot = await get(dbRef);
 
         if (snapshot.exists()) {
-            dataPesertaAktif = snapshot.val();
+            // JIKA SUDAH DAFTAR -> MUNCUL POPUP TINDAKAN MERIT
+            const dataPeserta = snapshot.val();
             
-            const kumpRef = ref(db, `kumpulan/${dataPesertaAktif.kumpulan}`);
+            const kumpRef = ref(db, `kumpulan/${dataPeserta.kumpulan}`);
             const kumpSnap = await get(kumpRef);
             let meritKump = kumpSnap.exists() ? kumpSnap.val().meritKumpulan : 0;
 
-            document.getElementById('lblTagId').innerText = tagId;
-            document.getElementById('lblNama').innerText = dataPesertaAktif.nama;
-            document.getElementById('lblKumpulan').innerText = dataPesertaAktif.kumpulan;
-            document.getElementById('lblSekolah').innerText = dataPesertaAktif.sekolah;
-            document.getElementById('lblMeritIndividu').innerText = dataPesertaAktif.meritIndividu;
-            document.getElementById('lblMeritKumpulan').innerText = meritKump;
-            document.getElementById('pesertaCard').style.display = 'block';
-            
-            // Auto scroll ke bawah sedikit untuk melihat kad profil
-            document.getElementById('pesertaCard').scrollIntoView({ behavior: 'smooth' });
+            bukaPopupMerit(tagId, dataPeserta, meritKump);
         } else {
+            // JIKA BELUM DAFTAR -> MUNCUL POPUP PENDAFTARAN
             bukaBorangPendaftaran(tagId);
         }
     }
 
+    // 1. POPUP BORANG PENDAFTARAN
     function bukaBorangPendaftaran(tagId) {
         Swal.fire({
             title: 'Daftar Peserta Baru',
-            text: `ID Tag: ${tagId}`,
             html: `
-                <input id="regNama" class="swal2-input" placeholder="Nama Penuh Peserta">
+                <p style="font-size:12px; color:gray; margin-bottom:15px;">ID Tag: ${tagId}</p>
+                <input id="regNama" class="swal2-input" placeholder="Nama Penuh Peserta" style="margin-top:0;">
                 <input id="regKumpulan" class="swal2-input" placeholder="Nama Kumpulan / Kafilah">
                 <input id="regSekolah" class="swal2-input" placeholder="Nama Sekolah">
             `,
             focusConfirm: false,
-            confirmButtonText: 'Simpan Rekod',
+            confirmButtonText: '<i class="fa-solid fa-floppy-disk"></i> Simpan Pendaftaran',
             confirmButtonColor: '#064e3b',
+            showCancelButton: true,
+            cancelButtonText: 'Batal',
             preConfirm: () => {
                 const nama = document.getElementById('regNama').value;
                 const kumpulan = document.getElementById('regKumpulan').value.trim();
@@ -391,33 +277,108 @@
                     await set(kumpRef, { meritKumpulan: 0 });
                 }
 
-                Swal.fire('Pendaftaran Berjaya', 'Data peserta telah dimasukkan ke dalam pangkalan data.', 'success');
-                semakPeserta(tagId);
+                Swal.fire({
+                    title: 'Pendaftaran Berjaya!',
+                    text: 'Data peserta dan kafilah telah direkodkan.',
+                    icon: 'success',
+                    confirmButtonColor: '#064e3b'
+                });
             }
         });
     }
 
-    window.kemaskiniMerit = async function(operasi, sasaran) {
-        const mataInput = parseInt(document.getElementById('inputMata').value);
-        const sebab = document.getElementById('inputSebab').value || "Aktiviti Nadwah";
+    // 2. POPUP PENGURUSAN MERIT (MUNCUL APBILA KAD DI-SCAN)
+    function bukaPopupMerit(tagId, dataPeserta, meritKump) {
+        Swal.fire({
+            title: `<span style="color:#064e3b; font-size:18px;"><i class="fa-solid fa-user-shield"></i> Profil Pengakap / Pemimpin</span>`,
+            html: `
+                <div style="background:#f8fafc; padding:15px; border-radius:10px; text-align:left; font-size:14px; margin-bottom:15px; border-left:4px solid #b45309;">
+                    <p style="margin:4px 0;"><strong>Nama:</strong> ${dataPeserta.nama}</p>
+                    <p style="margin:4px 0;"><strong>Kumpulan:</strong> ${dataPeserta.kumpulan}</p>
+                    <p style="margin:4px 0;"><strong>Sekolah:</strong> ${dataPeserta.sekolah}</p>
+                    <div style="display:flex; justify-content:space-between; margin-top:10px; padding-top:10px; border-top:1px dashed #cbd5e1;">
+                        <span>Merit Individu: <strong style="color:#10b981; font-size:16px;">${dataPeserta.meritIndividu} pts</strong></span>
+                        <span>Kumpulan: <strong style="color:#3b82f6; font-size:16px;">${meritKump} pts</strong></span>
+                    </div>
+                </div>
+                <div class="swal-input-group">
+                    <label>Nilai Mata Merit</label>
+                    <input type="number" id="popMata" class="swal2-input" placeholder="Contoh: 10" style="margin: 5px 0 10px 0; width:100%; box-sizing:border-box;">
+                </div>
+                <div class="swal-input-group">
+                    <label>Sebab / Aktiviti</label>
+                    <input type="text" id="popSebab" class="swal2-input" placeholder="Contoh: Kuliah Subuh Terbaik" style="margin: 5px 0 0 0; width:100%; box-sizing:border-box;">
+                </div>
+            `,
+            showDenyButton: true,
+            showCancelButton: true,
+            confirmButtonText: '<i class="fa-solid fa-plus-circle"></i> Tambah Merit',
+            denyButtonText: '<i class="fa-solid fa-minus-circle"></i> Tolak Merit',
+            cancelButtonText: 'Tutup',
+            confirmButtonColor: '#10b981',
+            denyButtonColor: '#ef4444',
+            preConfirm: () => {
+                const mata = parseInt(document.getElementById('popMata').value);
+                const sebab = document.getElementById('popSebab').value || "Aktiviti Nadwah";
+                if (isNaN(mata) || mata <= 0) {
+                    Swal.showValidationMessage(`Masukkan nilai mata merit yang sah!`);
+                }
+                return { mata, sebab };
+            },
+            preDeny: () => {
+                const mata = parseInt(document.getElementById('popMata').value);
+                const sebab = document.getElementById('popSebab').value || "Aktiviti Nadwah";
+                if (isNaN(mata) || mata <= 0) {
+                    Swal.showValidationMessage(`Masukkan nilai mata merit yang sah!`);
+                    return false;
+                }
+                return { mata, sebab };
+            }
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Tanya pilihan sasaran Tambah
+                pilihSasaranMerit('tambah', result.value.mata, result.value.sebab, dataPeserta, tagId);
+            } else if (result.isDenied) {
+                // Tanya pilihan sasaran Tolak
+                pilihSasaranMerit('tolak', result.value.mata, result.value.sebab, dataPeserta, tagId);
+            }
+        });
+    }
 
-        if (isNaN(mataInput) || mataInput <= 0) {
-            Swal.fire("Isian Tidak Sah", "Sila masukkan angka merit yang betul.", "warning");
-            return;
-        }
+    // Pilihan Sasaran (Individu atau Kumpulan)
+    function pilihSasaranMerit(operasi, mata, sebab, dataPeserta, tagId) {
+        Swal.fire({
+            title: 'Pilih Sasaran Merit',
+            text: `Anda mahu ${operasi} ${mata} mata untuk siapa?`,
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonText: 'Hanya Individu',
+            cancelButtonText: 'Satu Kumpulan Kafilah',
+            confirmButtonColor: '#047857',
+            cancelButtonColor: '#b45309'
+        }).then((res) => {
+            if (res.isConfirmed) {
+                laksanaKemaskini(operasi, 'individu', mata, sebab, dataPeserta, tagId);
+            } else if (res.dismiss === Swal.DismissReason.cancel) {
+                laksanaKemaskini(operasi, 'kumpulan', mata, sebab, dataPeserta, tagId);
+            }
+        });
+    }
 
+    // Eksekusi Kemaskini Data ke Firebase
+    async function laksanaKemaskini(operasi, sasaran, mataInput, sebab, dataPeserta, tagId) {
         const nilaiMata = operasi === 'tambah' ? mataInput : -mataInput;
-        const kumpNama = dataPesertaAktif.kumpulan;
+        const kumpNama = dataPeserta.kumpulan;
 
         if (sasaran === 'individu') {
-            const baruIndividu = (dataPesertaAktif.meritIndividu || 0) + nilaiMata;
-            await update(ref(db, `peserta/${activeTagId}`), { meritIndividu: baruIndividu });
-            simpanLog(activeTagId, kumpNama, "Individu", nilaiMata, sebab);
+            const baruIndividu = (dataPeserta.meritIndividu || 0) + nilaiMata;
+            await update(ref(db, `peserta/${tagId}`), { meritIndividu: baruIndividu });
+            simpanLog(tagId, kumpNama, "Individu", nilaiMata, sebab);
         } 
         else if (sasaran === 'kumpulan') {
             const kumpRef = ref(db, `kumpulan/${kumpNama}`);
             const kumpSnap = await get(kumpRef);
-            const baruKumpulan = (kumpSnap.val().meritKumpulan || 0) + nilaiMata;
+            const baruKumpulan = (kumpSnap.exists() ? kumpSnap.val().meritKumpulan : 0) + nilaiMata;
             await update(kumpRef, { meritKumpulan: baruKumpulan });
 
             const semuaPesertaSnap = await get(ref(db, 'peserta'));
@@ -431,19 +392,15 @@
                 }
                 await update(ref(db), updates);
             }
-            simpanLog(activeTagId, kumpNama, `Kumpulan (${kumpNama})`, nilaiMata, sebab);
+            simpanLog(tagId, kumpNama, `Kumpulan (${kumpNama})`, nilaiMata, sebab);
         }
 
         Swal.fire({
-            title: "Kemaskini Berjaya",
-            text: "Data merit baharu berjaya disimpan.",
+            title: "Kemas kini Berjaya",
+            text: `Merit ${sasaran} sebanyak ${nilaiMata} mata berjaya diproses.`,
             icon: "success",
             confirmButtonColor: "#064e3b"
         });
-        
-        document.getElementById('inputMata').value = '';
-        document.getElementById('inputSebab').value = '';
-        semakPeserta(activeTagId);
     }
 
     async function simpanLog(tagId, kumpulan, jenis, mata, sebab) {
@@ -452,32 +409,62 @@
         await push(logRef, { tagId, kumpulan, jenis, mata, sebab, masa: masaKini });
     }
 
-    const statusKumpulanRef = ref(db, 'kumpulan');
-    onValue(statusKumpulanRef, (snapshot) => {
-        const tbody = document.querySelector('#leaderboardKumpulan tbody');
-        tbody.innerHTML = '';
+    // 3. LISTEN & LIVE GENERATE DASHBOARD KUMPULAN + SENARAI AHLI
+    onValue(ref(db), (snapshot) => {
+        const containerDashboard = document.getElementById('dashboardKumpulan');
+        containerDashboard.innerHTML = '';
+
         if (snapshot.exists()) {
-            const data = snapshot.val();
-            let susunanKumpulan = [];
-            for (let nama in data) {
-                susunanKumpulan.push({ nama: nama, markah: data[nama].meritKumpulan });
+            const dataInduk = snapshot.val();
+            const dataKumpulan = dataInduk.kumpulan || {};
+            const dataPeserta = dataInduk.peserta || {};
+
+            // Loop setiap kumpulan yang wujud
+            for (let namaKump in dataKumpulan) {
+                let meritKumpulan = dataKumpulan[namaKump].meritKumpulan || 0;
+
+                // Cipta elemen Kad Kumpulan
+                let kumpCard = document.createElement('div');
+                kumpCard.className = 'kumpulan-card';
+
+                let kumpHeader = `
+                    <div class="kumpulan-header">
+                        <span class="kumpulan-nama"><i class="fa-solid fa-campground"></i> Kafilah: ${namaKump}</span>
+                        <span class="kumpulan-skor">${meritKumpulan} pts</span>
+                    </div>
+                `;
+                kumpCard.innerHTML = kumpHeader;
+
+                let ahliListHTML = '<ul class="ahli-list">';
+                let adaAhli = false;
+
+                // Cari ahli yang tergolong dalam kumpulan ini
+                for (let tagId in dataPeserta) {
+                    if (dataPeserta[tagId].kumpulan === namaKump) {
+                        adaAhli = true;
+                        ahliListHTML += `
+                            <li class="ahli-item">
+                                <span class="ahli-nama"><i class="fa-solid fa-user-graduate" style="font-size:10px; color:#cbd5e1; margin-right:5px;"></i> ${dataPeserta[tagId].nama}</span>
+                                <span class="ahli-merit">${dataPeserta[tagId].meritIndividu} pts</span>
+                            </li>
+                        `;
+                    }
+                }
+
+                if (!adaAhli) {
+                    ahliListHTML += `<li class="ahli-item" style="color:#a0aec0; font-style:italic;">Belum ada ahli didaftarkan</li>`;
+                }
+
+                ahliListHTML += '</ul>';
+                kumpCard.innerHTML += ahliListHTML;
+                containerDashboard.appendChild(kumpCard);
             }
-            susunanKumpulan.sort((a, b) => b.markah - a.markah);
-            susunanKumpulan.forEach((kump, index) => {
-                let medal = index + 1;
-                if(index === 0) medal = '<i class="fa-solid fa-medal" style="color:#eab308;"></i>';
-                if(index === 1) medal = '<i class="fa-solid fa-medal" style="color:#94a3b8;"></i>';
-                if(index === 2) medal = '<i class="fa-solid fa-medal" style="color:#ea580c;"></i>';
-                
-                let row = `<tr>
-                    <td>${medal}</td>
-                    <td><strong>${kump.nama}</strong></td>
-                    <td style="text-align: right; color: var(--primary-color);">${kump.markah} pts</td>
-                </tr>`;
-                tbody.innerHTML += row;
-            });
+
+            if (Object.keys(dataKumpulan).length === 0) {
+                containerDashboard.innerHTML = '<p style="grid-column: 1/-1; text-align:center; color:#718096;">Sila sentuh kad NFC pertama untuk memulakan pendaftaran kafilah.</p>';
+            }
         } else {
-            tbody.innerHTML = '<tr><td colspan="3" style="text-align:center; color:#6b7280;">Menunggu kemasukan data awal...</td></tr>';
+            containerDashboard.innerHTML = '<p style="grid-column: 1/-1; text-align:center; color:#718096;">Menunggu data dari sistem...</p>';
         }
     });
 </script>
