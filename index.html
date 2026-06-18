@@ -152,6 +152,17 @@
         /* Style tambahan untuk modal input */
         .swal-input-group { margin-bottom: 10px; text-align: left; }
         .swal-input-group label { font-size: 12px; font-weight: 600; color: #4a5568; }
+        
+        /* Butang Pintas Merit */
+        .shortcut-group { display: flex; gap: 10px; margin-bottom: 15px; }
+        .btn-shortcut {
+            flex: 1; padding: 10px; border: none; border-radius: 8px; cursor: pointer;
+            font-weight: 700; font-size: 14px; transition: background 0.2s;
+        }
+        .btn-shortcut-plus { background: #d1fae5; color: #065f46; border: 1px solid #10b981; }
+        .btn-shortcut-plus:hover { background: #a7f3d0; }
+        .btn-shortcut-minus { background: #fee2e2; color: #991b1b; border: 1px solid #ef4444; }
+        .btn-shortcut-minus:hover { background: #fecaca; }
     </style>
 </head>
 <body>
@@ -222,21 +233,17 @@
         const snapshot = await get(dbRef);
 
         if (snapshot.exists()) {
-            // JIKA SUDAH DAFTAR -> MUNCUL POPUP TINDAKAN MERIT
             const dataPeserta = snapshot.val();
-            
             const kumpRef = ref(db, `kumpulan/${dataPeserta.kumpulan}`);
             const kumpSnap = await get(kumpRef);
             let meritKump = kumpSnap.exists() ? kumpSnap.val().meritKumpulan : 0;
 
             bukaPopupMerit(tagId, dataPeserta, meritKump);
         } else {
-            // JIKA BELUM DAFTAR -> MUNCUL POPUP PENDAFTARAN
             bukaBorangPendaftaran(tagId);
         }
     }
 
-    // 1. POPUP BORANG PENDAFTARAN
     function bukaBorangPendaftaran(tagId) {
         Swal.fire({
             title: 'Daftar Peserta Baru',
@@ -287,10 +294,14 @@
         });
     }
 
-    // 2. POPUP PENGURUSAN MERIT (MUNCUL APBILA KAD DI-SCAN)
+    // FUNGSI UTAMA BUTANG PINTAS (+5 / -5 MATA)
+    window.setMataPintas = function(nilai) {
+        document.getElementById('popMata').value = nilai;
+    }
+
     function bukaPopupMerit(tagId, dataPeserta, meritKump) {
         Swal.fire({
-            title: `<span style="color:#064e3b; font-size:18px;"><i class="fa-solid fa-user-shield"></i> Profil Pengakap / Pemimpin</span>`,
+            title: `<span style="color:#064e3b; font-size:18px;"><i class="fa-solid fa-user-shield"></i> Profil Pemimpin</span>`,
             html: `
                 <div style="background:#f8fafc; padding:15px; border-radius:10px; text-align:left; font-size:14px; margin-bottom:15px; border-left:4px solid #b45309;">
                     <p style="margin:4px 0;"><strong>Nama:</strong> ${dataPeserta.nama}</p>
@@ -301,13 +312,20 @@
                         <span>Kumpulan: <strong style="color:#3b82f6; font-size:16px;">${meritKump} pts</strong></span>
                     </div>
                 </div>
+                
+                <!-- Butang Pintas +5 dan -5 Markah -->
+                <div class="shortcut-group">
+                    <button type="button" class="btn-shortcut btn-shortcut-plus" onclick="setMataPintas(5)"><i class="fa-solid fa-plus"></i> 5 Markah</button>
+                    <button type="button" class="btn-shortcut btn-shortcut-minus" onclick="setMataPintas(5)"><i class="fa-solid fa-minus"></i> 5 Markah</button>
+                </div>
+
                 <div class="swal-input-group">
                     <label>Nilai Mata Merit</label>
-                    <input type="number" id="popMata" class="swal2-input" placeholder="Contoh: 10" style="margin: 5px 0 10px 0; width:100%; box-sizing:border-box;">
+                    <input type="number" id="popMata" class="swal2-input" placeholder="Masukkan bilangan mata" style="margin: 5px 0 10px 0; width:100%; box-sizing:border-box;">
                 </div>
                 <div class="swal-input-group">
                     <label>Sebab / Aktiviti</label>
-                    <input type="text" id="popSebab" class="swal2-input" placeholder="Contoh: Kuliah Subuh Terbaik" style="margin: 5px 0 0 0; width:100%; box-sizing:border-box;">
+                    <input type="text" id="popSebab" class="swal2-input" placeholder="Contoh: Sahsiah Terpuji" style="margin: 5px 0 0 0; width:100%; box-sizing:border-box;">
                 </div>
             `,
             showDenyButton: true,
@@ -336,16 +354,13 @@
             }
         }).then((result) => {
             if (result.isConfirmed) {
-                // Tanya pilihan sasaran Tambah
                 pilihSasaranMerit('tambah', result.value.mata, result.value.sebab, dataPeserta, tagId);
             } else if (result.isDenied) {
-                // Tanya pilihan sasaran Tolak
                 pilihSasaranMerit('tolak', result.value.mata, result.value.sebab, dataPeserta, tagId);
             }
         });
     }
 
-    // Pilihan Sasaran (Individu atau Kumpulan)
     function pilihSasaranMerit(operasi, mata, sebab, dataPeserta, tagId) {
         Swal.fire({
             title: 'Pilih Sasaran Merit',
@@ -365,7 +380,6 @@
         });
     }
 
-    // Eksekusi Kemaskini Data ke Firebase
     async function laksanaKemaskini(operasi, sasaran, mataInput, sebab, dataPeserta, tagId) {
         const nilaiMata = operasi === 'tambah' ? mataInput : -mataInput;
         const kumpNama = dataPeserta.kumpulan;
@@ -409,7 +423,6 @@
         await push(logRef, { tagId, kumpulan, jenis, mata, sebab, masa: masaKini });
     }
 
-    // 3. LISTEN & LIVE GENERATE DASHBOARD KUMPULAN + SENARAI AHLI
     onValue(ref(db), (snapshot) => {
         const containerDashboard = document.getElementById('dashboardKumpulan');
         containerDashboard.innerHTML = '';
@@ -419,11 +432,9 @@
             const dataKumpulan = dataInduk.kumpulan || {};
             const dataPeserta = dataInduk.peserta || {};
 
-            // Loop setiap kumpulan yang wujud
             for (let namaKump in dataKumpulan) {
                 let meritKumpulan = dataKumpulan[namaKump].meritKumpulan || 0;
 
-                // Cipta elemen Kad Kumpulan
                 let kumpCard = document.createElement('div');
                 kumpCard.className = 'kumpulan-card';
 
@@ -438,7 +449,6 @@
                 let ahliListHTML = '<ul class="ahli-list">';
                 let adaAhli = false;
 
-                // Cari ahli yang tergolong dalam kumpulan ini
                 for (let tagId in dataPeserta) {
                     if (dataPeserta[tagId].kumpulan === namaKump) {
                         adaAhli = true;
