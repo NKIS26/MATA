@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistem Merit Nadwah Kepimpinan Islam 2026</title>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f4f7f6; margin: 0; padding: 20px; color: #333; }
+        .container { max-width: 800px; margin: 0 auto; background: white; padding: 20px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+        h1, h2 { text-align: center; color: #1a5f7a; }
+        .status-box { padding: 15px; border-radius: 8px; text-align: center; font-weight: bold; margin-bottom: 20px; border: 2px dashed #1a5f7a; background: #eef7f9; }
+        .btn { padding: 12px 20px; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; width: 100%; margin: 5px 0; font-size: 16px; }
+        .btn-green { background: #2ecc71; color: white; }
+        .btn-red { background: #e74c3c; color: white; }
+        .btn-primary { background: #1a5f7a; color: white; }
+        .flex-group { display: flex; gap: 10px; }
+        .card-info { background: #f9f9f9; padding: 15px; border-radius: 8px; margin-top: 20px; display: none; border-left: 5px solid #1a5f7a; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { padding: 12px; border: 1px solid #ddd; text-align: left; }
+        th { background: #1a5f7a; color: white; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>KEM NADWAH KEPIMPINAN ISLAM 2026</h1>
+    <h2>Sistem Pengurusan Merit NFC</h2>
+    
+    <div id="statusNFC" class="status-box">🔄 Klik butang di bawah untuk mengaktifkan imbasan NFC</div>
+    <button class="btn btn-primary" onclick="startNFCScan()">Aktifkan Skaner NFC</button>
+
+    <div id="pesertaCard" class="card-info">
+        <h3>Maklumat Peserta (Tag ID: <span id="lblTagId">-</span>)</h3>
+        <p><strong>Nama:</strong> <span id="lblNama">-</span></p>
+        <p><strong>Kumpulan:</strong> <span id="lblKumpulan">-</span></p>
+        <p><strong>Sekolah:</strong> <span id="lblSekolah">-</span></p>
+        <p><strong>Merit Individu:</strong> <span id="lblMeritIndividu" style="font-size: 20px; color: #2ecc71;">0</span></p>
+        <p><strong>Merit Kumpulan:</strong> <span id="lblMeritKumpulan" style="font-size: 20px; color: #3498db;">0</span></p>
+        
+        <hr>
+        <h4>Tindakan Fasilitator</h4>
+        <input type="number" id="inputMata" placeholder="Masukkan Jumlah Mata (Contoh: 10)" style="width: 96%; padding: 10px; margin-bottom: 10px; border-radius: 5px; border: 1px solid #ccc;">
+        <input type="text" id="inputSebab" placeholder="Sebab/Aktiviti (Contoh: LDK 1)" style="width: 96%; padding: 10px; margin-bottom: 10px; border-radius: 5px; border: 1px solid #ccc;">
+        
+        <div class="flex-group">
+            <button class="btn btn-green" onclick="kemaskiniMerit('tambah', 'individu')">+ Mata Individu</button>
+            <button class="btn btn-green" onclick="kemaskiniMerit('tambah', 'kumpulan')">+ Mata Kumpulan (Semua Ahli)</button>
+        </div>
+        <div class="flex-group">
+            <button class="btn btn-red" onclick="kemaskiniMerit('tolak', 'individu')">- Mata Individu</button>
+            <button class="btn btn-red" onclick="kemaskiniMerit('tolak', 'kumpulan')">- Mata Kumpulan (Semua Ahli)</button>
+        </div>
+    </div>
+
+    <hr style="margin: 30px 0;">
+    
+    <h2>Papan Markah Kumpulan (Live)</h2>
+    <table id="leaderboardKumpulan">
+        <thead>
+            <tr>
+                <th>Kedudukan</th>
+                <th>Nama Kumpulan</th>
+                <th>Jumlah Merit</th>
+            </tr>
+        </thead>
+        <tbody>
+            </tbody>
+    </table>
+</div>
+
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-app.js";
+    import { getDatabase, ref, get, set, update, onValue, push } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-database.js";
+
+    // Kredensial Firebase milik anda
+    const firebaseConfig = {
+        apiKey: "AIzaSyAD3o2cKtF36IWd6EYT0AKLUfefz8MI1B8",
+        authDomain: "nadwah-kepimpinan-islam-2026.firebaseapp.com",
+        databaseURL: "https://nadwah-kepimpinan-islam-2026-default-rtdb.asia-southeast1.firebasedatabase.app",
+        projectId: "nadwah-kepimpinan-islam-2026",
+        storageBucket: "nadwah-kepimpinan-islam-2026.firebasestorage.app",
+        messagingSenderId: "563075171577",
+        appId: "1:563075171577:web:7e33af9e3c91aa31cc0e28"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+
+    let activeTagId = null;
+    let dataPesertaAktif = null;
+
+    // 1. FUNGSI SKAN NFC
+    window.startNFCScan = async function() {
+        if ('NDEFReader' in window) {
+            try {
+                const ndef = new NDEFReader();
+                await ndef.scan();
+                document.getElementById('statusNFC').innerHTML = "🟢 Skaner Aktif. Sila sentuh kad NFC pada peranti...";
+                
+                ndef.onreading = async event => {
+                    activeTagId = event.serialNumber;
+                    semakPeserta(activeTagId);
+                };
+            } catch (error) {
+                Swal.fire("Ralat NFC", "Gagal mengakses skaner: " + error, "error");
+            }
+        } else {
+            Swal.fire("Tidak Disokong", "Peranti atau pelayar ini tidak menyokong Web NFC. Gunakan Chrome di Android (HTTPS).", "warning");
+        }
+    }
+
+    // 2. SEMAK REKOD PESERTA DI FIREBASE
+    async function semakPeserta(tagId) {
+        const dbRef = ref(db, `peserta/${tagId}`);
+        const snapshot = await get(dbRef);
+
+        if (snapshot.exists()) {
+            dataPesertaAktif = snapshot.val();
+            
+            const kumpRef = ref(db, `kumpulan/${dataPesertaAktif.kumpulan}`);
+            const kumpSnap = await get(kumpRef);
+            let meritKump = kumpSnap.exists() ? kumpSnap.val().meritKumpulan : 0;
+
+            document.getElementById('lblTagId').innerText = tagId;
+            document.getElementById('lblNama').innerText = dataPesertaAktif.nama;
+            document.getElementById('lblKumpulan').innerText = dataPesertaAktif.kumpulan;
+            document.getElementById('lblSekolah').innerText = dataPesertaAktif.sekolah;
+            document.getElementById('lblMeritIndividu').innerText = dataPesertaAktif.meritIndividu;
+            document.getElementById('lblMeritKumpulan').innerText = meritKump;
+            document.getElementById('pesertaCard').style.display = 'block';
+        } else {
+            bukaBorangPendaftaran(tagId);
+        }
+    }
+
+    // 3. POPUP BORANG PENDAFTARAN
+    function bukaBorangPendaftaran(tagId) {
+        Swal.fire({
+            title: 'Daftar Peserta Baru',
+            html: `
+                <p style="font-size:12px; color:gray;">Tag ID: ${tagId}</p>
+                <input id="regNama" class="swal2-input" placeholder="Nama Penuh Peserta">
+                <input id="regKumpulan" class="swal2-input" placeholder="Nama Kumpulan">
+                <input id="regSekolah" class="swal2-input" placeholder="Nama Sekolah">
+            `,
+            focusConfirm: false,
+            confirmButtonText: 'Simpan Pendaftaran',
+            preConfirm: () => {
+                const nama = document.getElementById('regNama').value;
+                const kumpulan = document.getElementById('regKumpulan').value.trim();
+                const sekolah = document.getElementById('regSekolah').value;
+                if (!nama || !kumpulan || !sekolah) {
+                    Swal.showValidationMessage(`Sila lengkapkan semua ruangan!`)
+                }
+                return { nama, kumpulan, sekolah }
+            }
+        }).then(async (result) => {
+            if (result.isConfirmed) {
+                const d = result.value;
+                
+                await set(ref(db, `peserta/${tagId}`), {
+                    nama: d.nama,
+                    kumpulan: d.kumpulan,
+                    sekolah: d.sekolah,
+                    meritIndividu: 0
+                });
+
+                const kumpRef = ref(db, `kumpulan/${d.kumpulan}`);
+                const kumpSnap = await get(kumpRef);
+                if (!kumpSnap.exists()) {
+                    await set(kumpRef, { meritKumpulan: 0 });
+                }
+
+                Swal.fire('Berjaya!', 'Peserta telah didaftarkan.', 'success');
+                semakPeserta(tagId);
+            }
+        });
+    }
+
+    // 4. PENGURUSAN MATA MERIT
+    window.kemaskiniMerit = async function(operasi, sasaran) {
+        const mataInput = parseInt(document.getElementById('inputMata').value);
+        const sebab = document.getElementById('inputSebab').value || "Aktiviti Kem";
+
+        if (isNaN(mataInput) || mataInput <= 0) {
+            Swal.fire("Ralat", "Sila masukkan jumlah mata yang sah.", "error");
+            return;
+        }
+
+        const nilaiMata = operasi === 'tambah' ? mataInput : -mataInput;
+        const kumpNama = dataPesertaAktif.kumpulan;
+
+        if (sasaran === 'individu') {
+            const baruIndividu = (dataPesertaAktif.meritIndividu || 0) + nilaiMata;
+            await update(ref(db, `peserta/${activeTagId}`), { meritIndividu: baruIndividu });
+            simpanLog(activeTagId, kumpNama, "Individu", nilaiMata, sebab);
+        } 
+        else if (sasaran === 'kumpulan') {
+            const kumpRef = ref(db, `kumpulan/${kumpNama}`);
+            const kumpSnap = await get(kumpRef);
+            const baruKumpulan = (kumpSnap.val().meritKumpulan || 0) + nilaiMata;
+            await update(kumpRef, { meritKumpulan: baruKumpulan });
+
+            const semuaPesertaSnap = await get(ref(db, 'peserta'));
+            if (semuaPesertaSnap.exists()) {
+                const senaraiPeserta = semuaPesertaSnap.val();
+                let updates = {};
+                for (let id in senaraiPeserta) {
+                    if (senaraiPeserta[id].kumpulan === kumpNama) {
+                        updates[`peserta/${id}/meritIndividu`] = (senaraiPeserta[id].meritIndividu || 0) + nilaiMata;
+                    }
+                }
+                await update(ref(db), updates);
+            }
+            simpanLog(activeTagId, kumpNama, `Kumpulan (${kumpNama})`, nilaiMata, sebab);
+        }
+
+        Swal.fire("Berjaya", `Markah telah dikemaskini.`, "success");
+        document.getElementById('inputMata').value = '';
+        document.getElementById('inputSebab').value = '';
+        semakPeserta(activeTagId);
+    }
+
+    // 5. SIMPAN LOG REKOD
+    async function simpanLog(tagId, kumpulan, jenis, mata, sebab) {
+        const logRef = ref(db, 'log_merit');
+        const masaKini = new Date().toLocaleString('ms-MY');
+        await push(logRef, { tagId, kumpulan, jenis, mata, sebab, masa: masaKini });
+    }
+
+    // 6. LIVE LEADERBOARD
+    const statusKumpulanRef = ref(db, 'kumpulan');
+    onValue(statusKumpulanRef, (snapshot) => {
+        const tbody = document.querySelector('#leaderboardKumpulan tbody');
+        tbody.innerHTML = '';
+        if (snapshot.exists()) {
+            const data = snapshot.val();
+            let susunanKumpulan = [];
+            for (let nama in data) {
+                susunanKumpulan.push({ nama: nama, markah: data[nama].meritKumpulan });
+            }
+            susunanKumpulan.sort((a, b) => b.markah - a.markah);
+            susunanKumpulan.forEach((kump, index) => {
+                let row = `<tr>
+                    <td>${index + 1}</td>
+                    <td><strong>${kump.nama}</strong></td>
+                    <td>${kump.markah} mata</td>
+                </tr>`;
+                tbody.innerHTML += row;
+            });
+        } else {
+            tbody.innerHTML = '<tr><td colspan="3" style="text-align:center;">Tiada data kumpulan.</td></tr>';
+        }
+    });
+</script>
+</body>
+</html>
